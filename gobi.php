@@ -1,4 +1,6 @@
 <?php
+/*script provided by Larry Hansard at Middle Tennessee State University libraries*/
+
    $host        = "host=your sierra server";
    $port        = "port=1032";
    $dbname      = "dbname=iii";
