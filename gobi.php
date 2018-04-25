@@ -1,5 +1,5 @@
 <?php
-/*script provided by Larry Hansard at Middle Tennessee State University libraries*/
+/*Code heavily updated by Craig Boman; initial script provided by Larry Hansard at Middle Tennessee State University libraries*/
 
 function getdb() {
    $host        = "host=your sierra server";
