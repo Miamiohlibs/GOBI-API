@@ -17,6 +17,10 @@ JOIN
 sierra_view.varfield_view AS v
 ON
 b.id = v.record_id
+JOIN
+sierra_view.record_metadata AS m  
+ON
+b.record_id = m.id  
 
 WHERE
   b.cataloging_date_gmt >  (now() - interval '8 days') --for initial load remove time limit
@@ -26,5 +30,12 @@ AND
   b.is_suppressed = 'FALSE'
 AND
   b.bcode2 != '@' --we are excluding ebooks here
+AND 
+  m.campus_code = ''
+AND
+  l.location_code <> 'h*' --these don't work; convert to regex
+AND
+  l.location_code <> 'm*'
+
 
   -- need to exclude hamilton and middletown locations
