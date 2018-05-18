@@ -14,38 +14,46 @@ function getdb() {
 
 $db_handle = getdb(); //call the db function
 
-
 $query = "
 SELECT
-  bib_record.cataloging_date_gmt,
-  varfield_view.marc_tag,
-  varfield_view.field_content as isbn,
-  bib_record.is_suppressed
+  b.cataloging_date_gmt, --b. v. abbreviations must be consistent throughout
+  v.marc_tag,
+  v.field_content as isbn,
+  b.is_suppressed
+
 FROM
-  sierra_view.bib_record,
-  sierra_view.varfield_view
+sierra_view.bib_record AS b
+JOIN
+sierra_view.bib_record_location AS l
+ON
+b.record_id = l.bib_record_id
+JOIN
+sierra_view.varfield_view AS v
+ON
+b.id = v.record_id
+
 WHERE
-  bib_record.record_id = varfield_view.record_id and
-  bib_record.cataloging_date_gmt >  (now() - interval '8 days') and
-  varfield_view.marc_tag = '020' and
-  bib_record.is_suppressed = 'FALSE'";
+  b.cataloging_date_gmt >  (now() - interval '8 days')
+AND
+  v.marc_tag = '020' --need regex exclude \|q.*
+AND
+  b.is_suppressed = 'FALSE'
+AND
+  b.bcode2 = '@'
+";
 
 
 $result = pg_query($db_handle, $query);
 
-if ($result) {
 
+while($row = pg_fetch_row($result)) {
+      echo "<div>". $row[2] . "\n" . "</div>";
+      echo "<br />\n";
 
-    for ($row = 0; $row < pg_numrows($result); $row++) {
-
-        echo pg_result($result, $row, 'isbn') .  "\n";
-
-
-    }
-
-}
+ }
 
  pg_free_result($result);
 //deprecated pg_close($db_handle);
 ?>
+
 
