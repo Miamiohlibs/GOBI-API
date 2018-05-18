@@ -16,10 +16,14 @@ $db_handle = getdb(); //call the db function
 
 $query = "
 SELECT
-  b.cataloging_date_gmt, --b. v. abbreviations must be consistent throughout
-  v.marc_tag,
-  v.field_content as isbn,
-  b.is_suppressed
+--b. and v. abbreviations must be consistent throughout
+--b. and v. abbreviations must be consistent throughout
+(regexp_matches(
+	v.field_content,
+	'[0-9]{9,10}[x]{0,1}|[0-9]{12,13}[x]{0,1}', --regex borrowed from PLCH
+	'i'
+	)
+)[1] as clean_isbn
 
 FROM
 sierra_view.bib_record AS b
@@ -33,13 +37,14 @@ ON
 b.id = v.record_id
 
 WHERE
-  b.cataloging_date_gmt >  (now() - interval '8 days')
+  b.cataloging_date_gmt >  (now() - interval '8 days') --for initial load remove time limit
 AND
   v.marc_tag = '020' --need regex exclude \|q.*
 AND
   b.is_suppressed = 'FALSE'
 AND
-  b.bcode2 = '@'
+  b.bcode2 != '@' --we are excluding ebooks here
+
 ";
 
 
