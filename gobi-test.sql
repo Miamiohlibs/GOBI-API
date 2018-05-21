@@ -25,7 +25,7 @@ b.record_id = m.id
 WHERE
  -- b.cataloging_date_gmt >  (now() - interval '8 days') --for initial load remove time limit
 --AND
-  v.marc_tag = '020' --need regex exclude \|q.*
+  v.marc_tag = '020' --ISBNs 
 AND
   b.is_suppressed = 'FALSE'
 AND
