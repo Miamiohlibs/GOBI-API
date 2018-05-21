@@ -23,19 +23,16 @@ ON
 b.record_id = m.id  
 
 WHERE
-  b.cataloging_date_gmt >  (now() - interval '8 days') --for initial load remove time limit
-AND
+ -- b.cataloging_date_gmt >  (now() - interval '8 days') --for initial load remove time limit
+--AND
   v.marc_tag = '020' --need regex exclude \|q.*
 AND
   b.is_suppressed = 'FALSE'
 AND
-  b.bcode2 != '@' --we are excluding ebooks here
+  b.bcode2 != '@' --excluding ebooks
 AND 
-  m.campus_code = ''
+  m.campus_code = '' --excluding virtual records
 AND
-  l.location_code <> 'h*' --these don't work; convert to regex
+  l.location_code NOT LIKE 'h%' --excluding hamilton
 AND
-  l.location_code <> 'm*'
-
-
-  -- need to exclude hamilton and middletown locations
+  l.location_code NOT LIKE 'm%' --excluding middletown
