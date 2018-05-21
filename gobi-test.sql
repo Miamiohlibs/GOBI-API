@@ -2,7 +2,7 @@
 --b. and v. abbreviations must be consistent throughout
 (regexp_matches(
 	v.field_content,
-	'[0-9]{9,10}[x]{0,1}|[0-9]{12,13}[x]{0,1}', --regex borrowed from PLCH
+	'[0-9]{9,10}[x]{0,1}|[0-9]{12,13}[x]{0,1}', --regex borrowed from PLCH (Ray Voelker)
 	'i'
 	)
 )[1] as clean_isbn
