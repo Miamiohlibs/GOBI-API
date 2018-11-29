@@ -46,7 +46,6 @@ AND
 AND
   loc.location_code NOT LIKE 'm%' --excluding middletown
 
---query doesn't work yet; pulling in too many items should only be 115
 
 ORDER BY clean_isbn ASC
 --limit 100
