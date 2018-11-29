@@ -1,8 +1,8 @@
-﻿select 
---count(*)
---*
+﻿/*the purpose of this query is to inform GOBI of any materials we may have 
+purchased outside of GOBI. This allows our book selecting librarians to avoid
+purchasing duplicates. */
 
---b. and v. abbreviations must be consistent throughout
+select 
 (regexp_matches(
 	v.field_content,
 	'[0-9]{9,10}[x]{0,1}|[0-9]{12,13}[x]{0,1}', --regex borrowed from PLCH (Ray Voelker)
