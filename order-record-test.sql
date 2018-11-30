@@ -17,6 +17,11 @@ sierra_view.bib_record_order_record_link AS L
 ON
 m.id = L.order_record_id
 JOIN
+sierra_view.order_record AS o
+ON
+l.order_record_id = o.id
+
+JOIN
 sierra_view.bib_record AS b
 ON
 L.bib_record_id = b.record_id
@@ -45,6 +50,10 @@ AND
   loc.location_code NOT LIKE 'h%' --excluding hamilton
 AND
   loc.location_code NOT LIKE 'm%' --excluding middletown
+AND
+  o.order_status_code != 'z'  --excluding cancelled orders
+
+  --add exclusion of order records with status code cancelled
 
 
 ORDER BY clean_isbn ASC
