@@ -53,8 +53,5 @@ AND
 AND
   o.order_status_code != 'z'  --excluding cancelled orders
 
-  --add exclusion of order records with status code cancelled
-
 
 ORDER BY clean_isbn ASC
---limit 100
