@@ -1,8 +1,8 @@
-﻿/*the purpose of this query is to inform GOBI of any materials we may have 
+﻿/*the purpose of this query is to inform GOBI of any materials we may have
 purchased outside of GOBI. This allows our book selecting librarians to avoid
 purchasing duplicates. */
 
-select 
+select
 (regexp_matches(
 	v.field_content,
 	'[0-9]{9,10}[x]{0,1}|[0-9]{12,13}[x]{0,1}', --regex borrowed from PLCH (Ray Voelker)
@@ -39,12 +39,12 @@ m.record_type_code = 'o'
 ANd
 m.creation_date_gmt > (now() - interval '8 days')
 AND
-  v.marc_tag = '020' --ISBNs 
+  v.marc_tag = '020' --ISBNs
 AND
   b.is_suppressed = 'FALSE'
 AND
   b.bcode2 != '@' --excluding ebooks
-AND 
+AND
   m.campus_code = '' --excluding virtual records
 AND
   loc.location_code NOT LIKE 'h%' --excluding hamilton
@@ -52,6 +52,7 @@ AND
   loc.location_code NOT LIKE 'm%' --excluding middletown
 AND
   o.order_status_code != 'z'  --excluding cancelled orders
-
+AND
+  o.vendor_record_code != 'ybp' --excluding Gobi/ybp;otherwise duplicates
 
 ORDER BY clean_isbn ASC

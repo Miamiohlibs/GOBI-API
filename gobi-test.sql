@@ -8,19 +8,27 @@
 )[1] as clean_isbn
 
 FROM
-sierra_view.bib_record AS b
+  sierra_view.bib_record AS b
 JOIN
-sierra_view.bib_record_location AS loc
+  sierra_view.bib_record_location AS loc
 ON
-b.record_id = loc.bib_record_id
+  b.record_id = loc.bib_record_id
 JOIN
-sierra_view.varfield_view AS v
+  sierra_view.varfield_view AS v
 ON
-b.id = v.record_id
+  b.id = v.record_id
 JOIN
-sierra_view.record_metadata AS m  
+  sierra_view.record_metadata AS m  
 ON
-b.record_id = m.id  
+  b.record_id = m.id  
+JOIN
+  sierra_view.bib_record_order_record_link as l
+ON
+  l.bib_record_id = b.id
+JOIN
+  sierra_view.order_record AS o
+ON
+  o.id = l.order_record_id
 
 WHERE
   m.record_type_code = 'b'  --need to limit to type code 'o'
@@ -32,6 +40,8 @@ AND
   b.is_suppressed = 'FALSE'
 AND
   b.bcode2 != '@' --excluding ebooks
+AND
+  o.vendor_record_code != 'ybp' --excluding Gobi/ybp;otherwise duplicates
 AND 
   m.campus_code = '' --excluding virtual records
 AND
